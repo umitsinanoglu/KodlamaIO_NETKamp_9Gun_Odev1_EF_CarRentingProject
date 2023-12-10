@@ -1,7 +1,6 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
-using System.ComponentModel;
 
 namespace ConsoleUi
 {
@@ -33,36 +32,53 @@ namespace ConsoleUi
                 Description = "Rastgele Açıklama",
                 ModelYear = randomModelYear
             });
-
-            foreach (var car in carManager.GetAll())
+            var result = carManager.GetAll();
+            if (result.IsSuccess == true)
             {
-                Console.WriteLine(car.Id + " - " + car.ModelName);
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine(car.Id + " - " + car.ModelName);
+                }
             }
-            Console.WriteLine("*******************************************");
-            Console.WriteLine(carManager.GetById(randomId).ModelName);
-            Console.WriteLine("*******************************************");
+            Console.WriteLine("*******************************************1");
+            var result1 = carManager.GetById(randomId);
+            Console.WriteLine(result1.Data.ModelName);
 
-            Console.WriteLine("*******************************************");
-            foreach (var car in carManager.GetAllByDailyPriceRange(9000, 990000))
+            Console.WriteLine("*******************************************2");
+
+            Console.WriteLine("*******************************************3");
+            var result2 = carManager.GetAllByDailyPriceRange(9000, 990000);
+            if (result2.IsSuccess == true)
             {
-                Console.WriteLine(car.Id + " - " + car.ModelName + " - " + car.DailyPrice);
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine(car.Id + " - " + car.ModelName + " - " + car.DailyPrice);
+                }
             }
-            Console.WriteLine("*******************************************");
+            Console.WriteLine("*******************************************4");
 
             BrandManager brandManager = new BrandManager(new EfBrandDal());
-            foreach (var car in carManager.GetCarsByBrandId(randomBrandId))
+            var result3 = carManager.GetCarsByBrandId(randomBrandId);
+            if (result.IsSuccess == true)
             {
-                Console.WriteLine(car.Id + " - " + car.ModelName + " - " + brandManager.GetById(car.BrandId).name);
+                foreach (var car in result3.Data)
+                {
+                    Console.WriteLine(car.Id + " - " + car.ModelName + " - " + brandManager.GetById(car.BrandId).name);
+                }
             }
 
-            Console.WriteLine("*******************************************");
+            Console.WriteLine("*******************************************5");
             ColorManager colorManager = new ColorManager(new EfColorDal());
-            foreach (var car in carManager.GetCarsByColorId(randomColorId))
+            var result4 = carManager.GetCarsByColorId(randomColorId);
+            if (result.IsSuccess == true)
             {
-                Console.WriteLine(car.Id + " - " + car.ModelName + " - " + colorManager.GetById(car.ColorId).name);
+                foreach (var car in result4.Data)
+                {
+                    Console.WriteLine(car.Id + " - " + car.ModelName + " - " + colorManager.GetById(car.ColorId).name);
+                }
             }
 
-            Console.WriteLine("*******************************************");
+            Console.WriteLine("*******************************************6");
 
             // Rastgele car değerler oluşturma
             int randomBrandId1 = random.Next(1, 1000); // 1 ile 100 arasında rastgele bir Id
@@ -76,11 +92,11 @@ namespace ConsoleUi
 
 
             string randomBrandName1 = carBrandNames[random.Next(0, carBrandNames.Length)]; // Örnek araba isimlerinden rastgele bir Name
-            
-            Console.WriteLine("*******************************************");
 
-            Car carToUpdate = carManager.GetById(40);
-            
+            Console.WriteLine("***Örnek araba isimlerinden rastgele bir Name***7");
+            var result5 = carManager.GetById(40);
+            Car carToUpdate = result5.Data;
+
             carToUpdate.BrandId = random.Next(1, 16);
             carToUpdate.ColorId = random.Next(1, 11);
             carToUpdate.ModelName = randomBrandName1 + " new model";
@@ -90,20 +106,19 @@ namespace ConsoleUi
 
             carManager.Update(carToUpdate);
 
-            Console.WriteLine("*******************************************");
-            Car carToDelete = carManager.GetById(48);
+            Console.WriteLine("*******************************************8");
+            var result6 = carManager.GetById(971);
+            Car carToDelete = result6.Data;
             carManager.Delete(carToDelete);
-            Console.WriteLine("*****Araç Detayları**************************************");
-
-            foreach (var car in carManager.GetCarDetails())
+            Console.WriteLine("*****Araç Detayları*************************9");
+            var result7 = carManager.GetCarDetails();
+            if (result7.IsSuccess == true)
             {
-                Console.WriteLine(car.CarName + " / " + car.BrandName + " / " + car.ColorName + " / " + car.DailyPrice );
+                foreach (var car in result7.Data)
+                {
+                    Console.WriteLine(car.CarName + " / " + car.BrandName + " / " + car.ColorName + " / " + car.DailyPrice);
+                }
             }
-            
-
-            //Car, Brand, Color sınıflarınız için tüm CRUD operasyonlarını hazır hale getiriniz.
-            //Console'da Tüm CRUD operasyonlarınızı Car, Brand, Model nesneleriniz için test ediniz. GetAll, GetById, Insert, Update, Delete.
-            //Arabaları şu bilgiler olacak şekilde listeleyiniz. CarName, BrandName, ColorName, DailyPrice. (İpucu: IDto oluşturup 3 tabloya join yazınız)
 
         }
     }
