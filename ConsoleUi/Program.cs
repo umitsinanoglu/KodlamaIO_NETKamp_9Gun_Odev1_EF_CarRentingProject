@@ -8,6 +8,85 @@ namespace ConsoleUi
     {
         static void Main(string[] args)
         {
+            //CarManagerTest();
+            UserManager userManager = new UserManager(new EfUserDal());
+            var random = new Random();
+
+            string GetRandomFirstName()
+            {
+                string[] firstNames = { "Acun", "Adin", "Afşin", "Ahu", "Akil", "Alpay", "Aral", "Aram", "Aras", "Arzu", "Aylin", "Azze", "Bangu", "Barlas", "Batır", "Belgin", "Bengi", "Berfu", "Besim", "Bihter", "Birtan", "Boran", "Burcu", "Canset", "Cenk", "Cilve", "Çağatay", "Çelebi", "Çelik", "Çınar", "Çisil", "Dalan", "Dalga", "Deren", "Deva", "Devin", "Dide", "Doruk", "Duha", "Esen", "Esin", "Evin", "Eylül", "Faruk", "Fulya", "Gece", "Gökçek", "Gönenç", "Ildır", "Irak", "Işık", "Işın", "İlayda", "İmran", "İsra", "Janset", "Karmen", "Kıvılcım", "Kumru", "Kurtuluş", "Lalezar", "Lila", "Mehir", "Melisa", "Mercan", "Nida", "Olcay", "Orbey", "Orçun", "Orhun", "Orkide", "Ortan", "Ozan", "Özbey", "Özdel", "Payam", "Poyraz", "Rana", "Sakman", "Turna", "Ufuk", "Uluberk", "Uman", "Umar", "Usbay", "Ülkü", "Yasemin", "Yaşıl", "Yeşim", "Yıldıray" };
+                return firstNames[random.Next(firstNames.Length)];
+            }
+
+            string GetRandomLastName()
+            {
+                string[] lastNames = { "ALTAŞ", "ARIKBOĞA", "ARSLANOĞLU", "ASENA", "ASIG", "ATAR", "ATAY", "AVCI", "AY GÜNEY", "BABUŞ", "BEKAR", "BÖYÜK", "CİNDEMİR", "CÖMERT", "ÇAYLI", "ÇELİK", "ÇINAR", "ÇOBANYILDIZI", "DAYLAK", "DEĞİRMENCİ AKAR", "DEMİRGAN", "DOĞAN", "DÜZ", "EMELİ", "ERTEKİN", "EŞFER", "GAYRETLİ AYDIN", "GÖKÇEK", "GÖNCÜ", "GÖZCÜ", "GÜLTEKİN", "GÜNDÜZ", "HALİS", "İRİS", "KALA", "KALYONCU UÇAR", "KANDEMİR", "KANYILMAZ", "KAPLAN", "KARAAĞAÇ", "KEŞKEK", "KISA", "KISA KARAKAYA", "KIZANOĞLU", "KOCAYİĞİT", "KÖYLÜ", "KUŞ", "MUTLU", "NOZOĞLU", "OKÇU", "ÖZ", "ÖZEL", "PEYNİRCİ", "SADIÇ", "SAĞCAN", "SARIEKİZ", "SAVAŞ", "SAYYİĞİT", "SERVET", "SU KURT", "SULHAN", "SÜRÜCÜ", "ŞAHBAZ", "ŞEKERLER", "ŞENER", "ŞİRZAİ", "TAY", "TOKAT", "TOLA", "TOPTAŞ", "TÜTEN", "ULAŞ", "UYĞUN", "UZ", "UZUN", "ÜLKEVAN", "YADİGAROĞLU", "YAĞCI", "YAKIŞAN", "YILDIZ ALTUN", "ZENGİN", "ZUBAROĞLU" };
+                return lastNames[random.Next(lastNames.Length)];
+            }
+
+            string GetRandomEmail()
+            {
+                string[] domains = { "gmail.com", "outlook.com", "mailinator.com", "hotmail.com" };
+                return $"{GetRandomFirstName().ToLower()}.{GetRandomLastName().ToLower()}@{domains[random.Next(domains.Length)]}";
+            }
+
+            string GetRandomPassword()
+            {
+                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                return new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray());
+            }
+
+            var userList = new List<User>
+            {
+                new User { Email = GetRandomEmail(), Password = GetRandomPassword(), FirstName = GetRandomFirstName(), LastName = GetRandomLastName() },
+                new User { Email = GetRandomEmail(), Password = GetRandomPassword(), FirstName = GetRandomFirstName(), LastName = GetRandomLastName() },
+                new User { Email = GetRandomEmail(), Password = GetRandomPassword(), FirstName = GetRandomFirstName(), LastName = GetRandomLastName() },
+                new User { Email = GetRandomEmail(), Password = GetRandomPassword(), FirstName = GetRandomFirstName(), LastName = GetRandomLastName() },
+                new User { Email = GetRandomEmail(), Password = GetRandomPassword(), FirstName = GetRandomFirstName(), LastName = GetRandomLastName() },
+                new User { Email = GetRandomEmail(), Password = GetRandomPassword(), FirstName = GetRandomFirstName(), LastName = GetRandomLastName() }
+            };
+
+            foreach (var user in userList)
+            {
+                userManager.Add(user);
+            }
+
+            //var customerList = new List<Customer>
+            //{
+            //    new Customer{CompanyName="Kiralama", UserID=1},
+            //    new Customer{CompanyName="Kiralama", UserID=2},
+            //    new Customer{CompanyName="Kiralama", UserID=3},
+            //    new Customer{CompanyName="Kiralama", UserID=4},
+            //    new Customer{CompanyName="Kiralama", UserID=5}
+            //};
+            //
+            //CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            //
+            //foreach (var customer in customerList)
+            //{
+            //    customerManager.Add(customer);
+            //}
+
+
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+
+            var rental = new Rental { Id = 3, CarId = 8, RentDate = DateTime.Now, ReturnDate = DateTime.Now.AddDays(5) };
+            rentalManager.Add(rental);
+
+            Console.WriteLine("*/*/*/*/Kiralana Araçlar -/*/*/*/*/*/ ");
+            var kiralananAraclar = rentalManager.GetAll().Data;
+
+            foreach (var rentCar in kiralananAraclar)
+            {
+                Console.WriteLine($"{rentCar.CarId} {rentCar.RentDate} {rentCar.ReturnDate} ");
+            }
+
+
+
+        }
+
+        private static void CarManagerTest()
+        {
             CarManager carManager = new CarManager(new EfCarDal()); // Örnek oluşturulduğunu varsayalım
 
             Random random = new Random();
@@ -63,7 +142,7 @@ namespace ConsoleUi
             {
                 foreach (var car in result3.Data)
                 {
-                    Console.WriteLine(car.Id + " - " + car.ModelName + " - " + brandManager.GetById(car.BrandId).name);
+                    Console.WriteLine(car.Id + " - " + car.ModelName + " - " + brandManager.GetById(car.BrandId).Data.name);
                 }
             }
 
@@ -74,7 +153,7 @@ namespace ConsoleUi
             {
                 foreach (var car in result4.Data)
                 {
-                    Console.WriteLine(car.Id + " - " + car.ModelName + " - " + colorManager.GetById(car.ColorId).name);
+                    Console.WriteLine(car.Id + " - " + car.ModelName + " - " + colorManager.GetById(car.ColorId).Data.name);
                 }
             }
 
@@ -119,7 +198,6 @@ namespace ConsoleUi
                     Console.WriteLine(car.CarName + " / " + car.BrandName + " / " + car.ColorName + " / " + car.DailyPrice);
                 }
             }
-
         }
     }
 }
