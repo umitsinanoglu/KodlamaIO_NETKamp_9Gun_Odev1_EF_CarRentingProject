@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.DTOs;
 
 namespace Business.Abstract
 {
@@ -8,11 +9,13 @@ namespace Business.Abstract
         IResult Add(Car car);
         IResult Update(Car car);
         IResult Delete(Car car);
+        IResult DeleteByName(string ModelName);
         IResult DeleteById(int id);
         IDataResult<List<Car>> GetAll();
         IDataResult<Car> GetById(int id);
-        IDataResult<List<Car>> GetCarsByBrandId(int brandId);
-        IDataResult<List<Car>> GetCarsByColorId(int colorId);
+        IDataResult<List<CarDetailDto>> GetCarDetailDtos();
+        IDataResult<List<Car>> GetAllByBrand(int brandId);
+        IDataResult<List<Car>> GetAllByColor(int colorId);
         IDataResult<List<Car>> GetAllByDailyPriceRange(decimal min, decimal max);
     }
 }

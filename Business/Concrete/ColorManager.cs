@@ -2,6 +2,7 @@
 using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 
 namespace Business.Concrete
@@ -21,10 +22,15 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarAdded);
         }
 
-        public IResult Delete(Color color)
+        public IResult Delete(string ColorName)
         {
-            _colorDal.Delete(color);
-            return new SuccessResult(Messages.CarDeleted);
+            var result = new SuccessDataResult<Color>(_colorDal.Get(cl => cl.name == ColorName));
+            if (result == null)
+            {
+                return new ErrorResult(Messages.ColorIdInvalid);
+            }
+            _colorDal.Delete(result.Data);
+            return new SuccessResult(Messages.ColorDeleted);
         }
 
         public IDataResult<List<Color>> GetAll()

@@ -59,7 +59,7 @@ namespace Business.Concrete
         {
             var result = new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId).ToList());
 
-            if (!result.IsSuccess)
+            if (result == null)
             {
                 return new ErrorDataResult<List<Car>>(Messages.BrandIdInvalid);
             }
@@ -70,7 +70,7 @@ namespace Business.Concrete
         {
             var result = new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId).ToList());
 
-            if (!result.IsSuccess)
+            if (result == null)
             {
                 return new ErrorDataResult<List<Car>>(Messages.ColorIdInvalid);
             }
@@ -85,18 +85,42 @@ namespace Business.Concrete
 
         public IResult DeleteById(int id)
         {
-            var carToDeleteDataResult = new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id));
+            var result = new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id));
 
-            if (carToDeleteDataResult.IsSuccess)
-            {
-                Car carToDelete = carToDeleteDataResult.Data;
-                _carDal.Delete(carToDelete);
-                return new SuccessResult(Messages.CarDeleted);
-            }
-            else
+            if (result == null)
             {
                 return new ErrorResult(Messages.CarIdInvalid);
+
             }
+            _carDal.Delete(result.Data);
+            return new SuccessResult(Messages.CarDeleted);
+
+        }
+
+        public IResult DeleteByName(string ModelName)
+        {
+            var result = new SuccessDataResult<Car>(_carDal.Get(c => c.ModelName == ModelName));
+            if (result == null)
+            {
+                return new ErrorResult(Messages.ModelNameInvalid);
+            }
+            _carDal.Delete(result.Data);
+            return new SuccessResult(Messages.CarDeleted);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailDtos()
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarListed);
+        }
+
+        public IDataResult<List<Car>> GetAllByBrand(int brandId)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId));
+        }
+
+        public IDataResult<List<Car>> GetAllByColor(int colorId)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
         }
     }
 }

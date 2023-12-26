@@ -10,7 +10,9 @@
         public static string CarListed = "Araç listelendi";
         public static string MaintenanceTime = "Sistem Bakımda";
         public static string CarIdInvalid = "Araç id hatalı.";
+        public static string ModelNameInvalid = "Araç modeli hatalı.";
         public static string ColorIdInvalid = "Araç renk id hatalı.";
+        public static string ColorNameInvalid = "Araç renk adı hatalı.";
         public static string BrandIdInvalid = "Araç model id hatalı.";
 
         public static string ColorAdded =   "Renk başarı ile eklendi";
@@ -30,12 +32,16 @@
         public static string UserDeleted = "Kullanıcı başarı ile silindi";
         public static string UsersListed = "Kullanıcılar listelendi";
         public static string UserListed = "Kullanıcı listelendi";
+        public static string UserIdInvalid = "Kullanıcı Id Hatalı";
+        public static string UserNameInvalid = "Kullanıcı Adı Hatalı";
 
         public static string CustomerAdded = "Müşteri başarı ile eklendi";
         public static string CustomerUpdated = "Müşteri başarı ile güncellendi";
         public static string CustomerDeleted = "Müşteri başarı ile silindi";
         public static string CustomersListed = "Müşterilar listelendi";
         public static string CustomerListed = "Müşteri listelendi";
+        public static string CustomerIdInvalid = "Müşteri Id Hatalı";
+        public static string CustomerNameInvalid = "Müşteri Adı Hatalı";
 
         public static string RentalAdded = "Araç Kiralama başarılı";
         public static string RentalUpdated = "Araç Kiralama başarı ile güncellendi";

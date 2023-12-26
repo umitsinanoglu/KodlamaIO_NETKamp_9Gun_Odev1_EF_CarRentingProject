@@ -21,10 +21,15 @@ namespace Business.Concrete
             return new SuccessResult(Messages.BrandAdded);
         }
 
-        public IResult Delete(Brand brand)
+        public IResult Delete(string BrandName)
         {
-            _brandDal.Delete(brand);
-            return new SuccessResult(Messages.BrandDeleted);
+            var result = _brandDal.Get(b => b.name == BrandName);
+            if (result == null)
+            {
+                return new ErrorResult();
+            }
+            _brandDal.Delete(result);
+            return new SuccessResult();
         }
 
         public IDataResult<List<Brand>> GetAll()

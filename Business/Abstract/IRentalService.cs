@@ -7,7 +7,7 @@ namespace Business.Abstract
     {
         IDataResult<List<Rental>> GetAll();
         IResult Add(Rental rental);
-        IResult Delete(Rental rental);
+        IResult Delete(int RentalId);
         IResult Update(Rental rental);
         IDataResult<Rental> GetById(int id);
     }
